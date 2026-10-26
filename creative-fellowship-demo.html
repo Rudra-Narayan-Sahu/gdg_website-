@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Fellowship - Reverse Engineered Hover & Font Showcase</title>
+
+  <!-- Google Creative Fellowship Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Mono:400,500,700|Product+Sans:400&lang=en" rel="stylesheet">
+
+  <style>
+    :root {
+      --gcf-blue: #13a1d7;
+      --gcf-blue-lighter: #71c7e7;
+      --gcf-blue-darker: #0f81ac;
+
+      --gcf-yellow: #ffb400;
+      --gcf-yellow-lighter: #ffd266;
+      --gcf-yellow-darker: #cc9000;
+
+      --gcf-green: #00b213;
+      --gcf-green-lighter: #66d171;
+      --gcf-green-darker: #008e0f;
+
+      --gcf-red: #ed1818;
+      --gcf-red-lighter: #f47474;
+      --gcf-red-darker: #be1313;
+
+      --gcf-border-color: #000;
+      --gcf-border-radius: 12px;
+      --gcf-border-width: 4px;
+      --gcf-drop-shadow-offset: 4px;
+
+      --font-mono: 'Google Sans Mono', monospace;
+      --font-heading: 'Google Sans', sans-serif;
+      --font-body: 'Google Sans Text', sans-serif;
+      --font-brand: 'Product Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      color: #202124;
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      height: 64px;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e0e0e0;
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      font-family: var(--font-brand);
+      font-size: 22px;
+      color: #202124;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: #000;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Section */
+    .hero-container {
+      position: relative;
+      width: 100%;
+      height: 75vh;
+      min-height: 520px;
+      max-height: 720px;
+      overflow: hidden;
+      user-select: none;
+      cursor: crosshair;
+    }
+
+    /* Vibrant Conic Gradient underneath */
+    .conic-gradient-bg {
+      position: absolute;
+      inset: 0;
+      background: conic-gradient(
+        from 218deg at 30% 54.12%,
+        #13a1d7 107.8455841541deg,
+        #ed1818 180.0625491142deg,
+        #ffb700 273.1495571136deg,
+        #00b213 359.6728134155deg
+      );
+      background-blend-mode: screen;
+      z-index: 1;
+    }
+
+    /* Hidden Message Scattered Words */
+    .hidden-message-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      pointer-events: none;
+    }
+
+    .message-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .word-box {
+      position: relative;
+      flex: 1;
+      height: 48px;
+    }
+
+    .word {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 500;
+      color: #111;
+      position: absolute;
+      text-transform: lowercase;
+      letter-spacing: -0.5px;
+    }
+
+    .word-box:nth-child(4n+1) .word { top: 10%; left: 10%; }
+    .word-box:nth-child(4n+2) .word { top: 60%; left: 30%; }
+    .word-box:nth-child(4n+3) .word { top: 30%; right: 20%; }
+    .word-box:nth-child(4n+4) .word { bottom: 10%; right: 10%; }
+
+    /* The Scratch Canvas */
+    #scratchCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    /* Hero Foreground Content */
+    .hero-foreground {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      background: #000;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      pointer-events: auto;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-mono);
+      font-size: clamp(32px, 6vw, 64px);
+      font-weight: 500;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      color: #000;
+      margin-bottom: 16px;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+    }
+
+    .hero-h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(16px, 2.5vw, 24px);
+      font-weight: 400;
+      line-height: 1.4;
+      max-width: 680px;
+      color: #202124;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.08);
+      pointer-events: auto;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      background: #ffffff;
+      border-bottom: 2px solid #000;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--gcf-yellow);
+      border: 2px solid #000;
+      border-radius: 6px;
+      box-shadow: 2px 2px 0 0 #000;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--gcf-yellow-lighter);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 0 #000;
+    }
+
+    .btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 0 #000;
+    }
+
+    /* Section Showcase */
+    .showcase-grid {
+      max-width: 1200px;
+      margin: 48px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+
+    /* Neo-Brutalist 3D Flip Card Component */
+    .card-scene {
+      perspective: 40rem;
+      min-height: 380px;
+    }
+
+    .window-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      border: 4px solid #000;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 4px 4px 0 0 #000;
+      transform-style: preserve-3d;
+      transition: transform 0.707s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .window-card.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .card-face.back {
+      transform: rotateY(-180deg);
+      background: #fdfdfd;
+      padding: 24px;
+      justify-content: space-between;
+    }
+
+    .title-bar {
+      padding: 10px 16px;
+      border-bottom: 4px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .title-bar.blue { background-color: var(--gcf-blue); }
+    .title-bar.yellow { background-color: var(--gcf-yellow); }
+    .title-bar.green { background-color: var(--gcf-green); color: #fff; }
+    .title-bar.red { background-color: var(--gcf-red); color: #fff; }
+
+    .card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .card-text {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      color: #3c4043;
+    }
+
+    .card-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 2px dashed #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .flip-hint {
+      color: #5f6368;
+      font-style: italic;
+    }
+
+    /* Typography Table */
+    .typo-section {
+      max-width: 1200px;
+      margin: 48px auto;
+      padding: 0 24px;
+    }
+
+    .typo-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 4px solid #000;
+      box-shadow: 4px 4px 0 0 #000;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .typo-table th, .typo-table td {
+      padding: 14px 18px;
+      border: 1px solid #000;
+      text-align: left;
+    }
+
+    .typo-table th {
+      background: var(--gcf-yellow);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .typo-table td {
+      font-size: 14px;
+    }
+
+    .sample-mono { font-family: var(--font-mono); }
+    .sample-heading { font-family: var(--font-heading); font-size: 20px; }
+    .sample-body { font-family: var(--font-body); }
+    .sample-brand { font-family: var(--font-brand); font-size: 18px; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="brand">
+      <strong>Google</strong> Creative Fellowship
+      <span class="brand-tag">Reverse Engineered</span>
+    </div>
+    <div style="font-family: var(--font-mono); font-size: 13px;">
+      Hover over the canvas below to reveal!
+    </div>
+  </header>
+
+  <!-- Interactive Controls -->
+  <div class="controls-bar">
+    <span><strong>Brush Size:</strong></span>
+    <input type="range" id="brushRange" min="5" max="25" value="10">
+    <span id="brushVal">10px (Virtual)</span>
+    <button class="btn" id="btnToggleIdle">Pause Autonomous Brush</button>
+    <button class="btn" id="btnReset">Reset Canvas Mask</button>
+  </div>
+
+  <!-- Hero Section with Canvas Scratch Hover -->
+  <section class="hero-container" id="heroArea">
+    <!-- Layer 1: Conic Gradient -->
+    <div class="conic-gradient-bg"></div>
+
+    <!-- Layer 2: Scattered Secret Words -->
+    <div class="hidden-message-layer">
+      <div class="message-row">
+        <div class="word-box"><span class="word">The</span></div>
+        <div class="word-box"><span class="word">world</span></div>
+        <div class="word-box"><span class="word">needs</span></div>
+        <div class="word-box"><span class="word">more</span></div>
+      </div>
+      <div class="message-row">
+        <div class="word-box"><span class="word">curious</span></div>
+        <div class="word-box"><span class="word">minds</span></div>
+        <div class="word-box"><span class="word">like</span></div>
+        <div class="word-box"><span class="word">yours.</span></div>
+      </div>
+    </div>
+
+    <!-- Layer 3: Opaque Canvas that gets erased on hover -->
+    <canvas id="scratchCanvas"></canvas>
+
+    <!-- Layer 4: Foreground Copy -->
+    <div class="hero-foreground">
+      <div class="hero-badge">Google Creative Fellowship</div>
+      <h1 class="hero-h1">CREATIVE FELLOWSHIP</h1>
+      <h2 class="hero-h2">A program for emerging creative talent that offers hands-on experience and exposure across Google’s various in-house creative teams.</h2>
+    </div>
+  </section>
+
+  <!-- Cards & Window Manager Showcase -->
+  <main class="showcase-grid">
+    <!-- Card 1: Brand Studio -->
+    <div class="card-scene">
+      <div class="window-card" onclick="this.classList.toggle('flipped')">
+        <div class="card-face front">
+          <div class="title-bar blue">
+            <span>BRAND_STUDIO.EXE</span>
+            <span>[ + ]</span>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3 class="card-title">Motion & Visual Design</h3>
+              <p class="card-text">Combines contemporary design aesthetics with technical expertise in motion, 3D, and experimental animation pipelines.</p>
+            </div>
+            <div class="card-meta">
+              <span>ROLE: MOTION DESIGNER</span>
+              <span class="flip-hint">Click to flip card &rarr;</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-face back">
+          <div class="title-bar blue">
+            <span>INFO: DETAILS</span>
+            <span>[ X ]</span>
+          </div>
+          <p class="card-text">Supports Google Doodles, creating responsive GIF animations and short-form storytelling using state-of-the-art tools.</p>
+          <div class="card-meta">
+            <span>LOCATION: NEW YORK, NY</span>
+            <span class="flip-hint">&larr; Click to return</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Creative Lab -->
+    <div class="card-scene">
+      <div class="window-card" onclick="this.classList.toggle('flipped')">
+        <div class="card-face front">
+          <div class="title-bar yellow">
+            <span>CREATIVE_LAB.APP</span>
+            <span>[ + ]</span>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3 class="card-title">Creative Technologist</h3>
+              <p class="card-text">Designers and programmers who make Google's magic more magical, inventing prototypes and new interface paradigms.</p>
+            </div>
+            <div class="card-meta">
+              <span>ROLE: TECH ARTIST</span>
+              <span class="flip-hint">Click to flip card &rarr;</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-face back">
+          <div class="title-bar yellow">
+            <span>INFO: DETAILS</span>
+            <span>[ X ]</span>
+          </div>
+          <p class="card-text">Focuses on vibe-coding, generative workflows, TypeScript, Python, and experimental hardware/software UI.</p>
+          <div class="card-meta">
+            <span>LOCATION: SAN FRANCISCO, CA</span>
+            <span class="flip-hint">&larr; Click to return</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Cloud & YouTube -->
+    <div class="card-scene">
+      <div class="window-card" onclick="this.classList.toggle('flipped')">
+        <div class="card-face front">
+          <div class="title-bar green">
+            <span>YOUTUBE_STUDIO.SH</span>
+            <span>[ + ]</span>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3 class="card-title">AI Prompt & Storyteller</h3>
+              <p class="card-text">Translating creative concepts into precise technical inputs to explore generative video, Shorts, and creator tools.</p>
+            </div>
+            <div class="card-meta">
+              <span>ROLE: VIDEO STORYTELLER</span>
+              <span class="flip-hint">Click to flip card &rarr;</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-face back">
+          <div class="title-bar green">
+            <span>INFO: DETAILS</span>
+            <span>[ X ]</span>
+          </div>
+          <p class="card-text">Blends narrative-building and visual artistry to pioneer new formats across the global YouTube platform.</p>
+          <div class="card-meta">
+            <span>LOCATION: LOS ANGELES, CA</span>
+            <span class="flip-hint">&larr; Click to return</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Typography Comparison Table -->
+  <section class="typo-section">
+    <table class="typo-table">
+      <thead>
+        <tr>
+          <th>Font Family</th>
+          <th>Used For</th>
+          <th>Sample Preview</th>
+          <th>CSS Declaration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Google Sans Mono</strong></td>
+          <td>Section Headings, Code Badges, Window Titlebars, Nav Links</td>
+          <td class="sample-mono">ABCDEF abcdef 012345 &lt;/&gt;</td>
+          <td><code>font-family: 'Google Sans Mono', monospace; font-weight: 500;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Google Sans</strong></td>
+          <td>H1/H2 Hero Headlines, Bold Subtitles, Primary CTAs</td>
+          <td class="sample-heading">The world needs more curious minds.</td>
+          <td><code>font-family: 'Google Sans', sans-serif; font-weight: 400|700;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Google Sans Text</strong></td>
+          <td>Body copy, FAQ Expansion Panels, Captions, Long Paragraphs</td>
+          <td class="sample-body">A 6-month hands-on fellowship program across Google teams.</td>
+          <td><code>font-family: 'Google Sans Text', sans-serif; line-height: 1.5;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Product Sans</strong></td>
+          <td>Header branding and Google corporate logo typography</td>
+          <td class="sample-brand">Google Creative Fellowship</td>
+          <td><code>font-family: 'Product Sans', sans-serif; font-size: 22px;</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Reverse Engineered JavaScript Engine -->
+  <script>
+    (function () {
+      const heroArea = document.getElementById('heroArea');
+      const canvas = document.getElementById('scratchCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // Virtual low-resolution configuration (from Google source)
+      const virtualPxY = 90;
+      let virtualPxX = 144; // 16:10 ratio: 90 / (10/16) = 144
+      let brushSize = 10;
+      let idleTimer = null;
+      let isIdleRunning = true;
+
+      // Autonomous bouncing particles
+      let particles = [
+        [{ x: 30, y: 30, size: brushSize }, { horiz: 'right', vert: 'down' }],
+        [{ x: 100, y: 60, size: brushSize }, { horiz: 'left', vert: 'up' }]
+      ];
+
+      function resizeVirtualCanvas() {
+        const aspect = heroArea.offsetWidth / heroArea.offsetHeight;
+        virtualPxX = Math.round(virtualPxY * aspect);
+        canvas.width = virtualPxX;
+        canvas.height = virtualPxY;
+
+        // Fill with opaque white mask
+        resetMask();
+      }
+
+      function resetMask() {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, virtualPxX, virtualPxY);
+      }
+
+      // Exact Midpoint Aliased Circle Scanline Algorithm (Wh in decompressed bundle)
+      function eraseCircleAliased(d, e, size) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        let c = size / 2;
+        let b = c;
+        let f = 0, g = 0;
+
+        // Center line
+        ctx.rect(d - b, e, c * 2, 1);
+
+        // Scanlines
+        while (b > f) {
+          g -= --b - ++f;
+          if (g < 0) {
+            g += b++;
+          }
+          c = f * 2;
+          const m = b * 2;
+          ctx.rect(d - f, e - b, c, 1);
+          ctx.rect(d - b, e - f, m, 1);
+          ctx.rect(d - b, e + f, m, 1);
+          ctx.rect(d - f, e + b, c, 1);
+        }
+        ctx.fill();
+      }
+
+      // Screen-to-Virtual coordinate conversion (Vh in decompressed bundle)
+      function getVirtualCoords(e) {
+        const rect = heroArea.getBoundingClientRect();
+        const clientX = e.clientX !== undefined ? e.clientX : (e.touches ? e.touches[0].clientX : 0);
+        const clientY = e.clientY !== undefined ? e.clientY : (e.touches ? e.touches[0].clientY : 0);
+        const offsetX = clientX - rect.left;
+        const offsetY = clientY - rect.top;
+        return {
+          x: Math.round((offsetX / heroArea.offsetWidth) * virtualPxX),
+          y: Math.round((offsetY / heroArea.offsetHeight) * virtualPxY)
+        };
+      }
+
+      // Hover / Mousemove event
+      heroArea.addEventListener('mousemove', function (e) {
+        const { x, y } = getVirtualCoords(e);
+        eraseCircleAliased(x, y, brushSize);
+      });
+
+      // Touchmove for mobile
+      heroArea.addEventListener('touchmove', function (e) {
+        const { x, y } = getVirtualCoords(e);
+        eraseCircleAliased(x, y, brushSize);
+      }, { passive: true });
+
+      // Autonomous idle bouncing brush loop (Yh in decompressed bundle)
+      function startIdleAnimation() {
+        if (idleTimer) clearInterval(idleTimer);
+        idleTimer = setInterval(() => {
+          particles = particles.map(([pt, dir]) => {
+            let { x, y, size } = pt;
+            let { horiz, vert } = dir;
+
+            if (vert === 'up') {
+              if (y - 1 - size / 2 < 0) { y += 1; vert = 'down'; } else { --y; }
+            } else {
+              if (y + 1 + size / 2 > virtualPxY) { y -= 1; vert = 'up'; } else { ++y; }
+            }
+
+            if (horiz === 'left') {
+              if (x - 1 - size / 2 < 0) { x += 1; horiz = 'right'; } else { --x; }
+            } else {
+              if (x + 1 + size / 2 > virtualPxX) { x -= 1; horiz = 'left'; } else { ++x; }
+            }
+
+            return [{ x, y, size: brushSize }, { horiz, vert }];
+          });
+
+          requestAnimationFrame(() => {
+            for (const [pt] of particles) {
+              eraseCircleAliased(pt.x, pt.y, pt.size);
+            }
+          });
+        }, 50);
+      }
+
+      function stopIdleAnimation() {
+        if (idleTimer) clearInterval(idleTimer);
+        idleTimer = null;
+      }
+
+      // Controls
+      const brushRange = document.getElementById('brushRange');
+      const brushVal = document.getElementById('brushVal');
+      const btnToggleIdle = document.getElementById('btnToggleIdle');
+      const btnReset = document.getElementById('btnReset');
+
+      brushRange.addEventListener('input', (e) => {
+        brushSize = parseInt(e.target.value, 10);
+        brushVal.textContent = brushSize + 'px (Virtual)';
+      });
+
+      btnToggleIdle.addEventListener('click', () => {
+        isIdleRunning = !isIdleRunning;
+        if (isIdleRunning) {
+          startIdleAnimation();
+          btnToggleIdle.textContent = 'Pause Autonomous Brush';
+        } else {
+          stopIdleAnimation();
+          btnToggleIdle.textContent = 'Resume Autonomous Brush';
+        }
+      });
+
+      btnReset.addEventListener('click', () => {
+        resetMask();
+      });
+
+      window.addEventListener('resize', resizeVirtualCanvas);
+
+      // Init
+      resizeVirtualCanvas();
+      startIdleAnimation();
+    })();
+  </script>
+</body>
+</html>

@@ -44,12 +44,12 @@ export default function EventsPage({ onBackToHome }) {
       </div>
 
       <section className="events-section" id="events">
-        <h2 className="section-title">GDG Events</h2>
-        <p className="section-subtitle">Past Events Of Our Community</p>
+        <h2 className="section-title reveal-on-scroll">GDG Events</h2>
+        <p className="section-subtitle reveal-on-scroll">Past Events Of Our Community</p>
 
         <div className="events-cards">
-          {allEvents.map((ev) => (
-            <div key={ev.id} className="event-card">
+          {allEvents.map((ev, index) => (
+            <div key={ev.id} className={`event-card reveal-on-scroll reveal-delay-${(index % 3) + 1}`}>
               <div className="card-image">
                 <img src={ev.image} alt={ev.heading} />
               </div>

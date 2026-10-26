@@ -3,49 +3,49 @@ import React, { useState } from 'react';
 const galleryItems = [
   {
     id: 1,
-    img: '/gallery/photo_1.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/gallery/photo_1.jpg',
     caption: 'Workshop Session in Progress - Hands-on Lab',
     isLarge: true,
   },
   {
     id: 2,
-    img: '/gallery/photo_2.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/gallery/photo_2.jpg',
     caption: 'A Chatbot Talks. An Agent Gets Things Done.',
     isLarge: false,
   },
   {
     id: 3,
-    img: '/gallery/photo_5.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/gallery/photo_5.jpg',
     caption: 'Architecting Intelligence: Cloud Foundations to Agentic Ecosystem',
     isLarge: false,
   },
   {
     id: 4,
-    img: '/gallery/photo_4.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/gallery/photo_4.jpg',
     caption: 'Speaker Addressing the Participants',
     isLarge: false,
   },
   {
     id: 5,
-    img: '/gallery/photo_3.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/gallery/photo_3.jpg',
     caption: 'Engaged Students and Hands-on Coding',
     isLarge: false,
   },
   {
     id: 6,
-    img: '/gallery/photo_6.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/gallery/photo_6.jpg',
     caption: 'Interactive Lab Discussion and Keynote',
     isLarge: false,
   },
   {
     id: 7,
-    img: '/img2.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/1792613993134.jpg',
     caption: 'Community Event Moments',
     isLarge: false,
   },
   {
     id: 8,
-    img: '/gallery/photo_7.jpg',
+    img: 'https://ik.imagekit.io/mzqqngfdb/gallery/photo_7.jpg',
     caption: 'Grand Auditorium Gathering at GIET University',
     isWide: true,
   },
@@ -56,8 +56,8 @@ export default function Gallery({ onOpenGalleryPage }) {
 
   return (
     <section className="gallery-section" id="gallery">
-      <h2 className="section-title">Gallery</h2>
-      <p className="section-subtitle">
+      <h2 className="section-title reveal-on-scroll">Gallery</h2>
+      <p className="section-subtitle reveal-on-scroll">
         Take a look at some of our recent events and activities.
       </p>
 
@@ -65,7 +65,7 @@ export default function Gallery({ onOpenGalleryPage }) {
         {galleryItems.map((item, idx) => (
           <div
             key={item.id}
-            className={`grid-item ${item.isLarge ? 'item1' : ''} ${item.isWide ? 'wide' : ''} gal${idx + 1}`}
+            className={`grid-item ${item.isLarge ? 'item1' : ''} ${item.isWide ? 'wide' : ''} gal${idx + 1} reveal-on-scroll reveal-delay-${(idx % 3) + 1}`}
             onClick={() => setActivePhoto(item)}
             style={{ cursor: 'pointer' }}
             title={item.caption}
@@ -78,7 +78,7 @@ export default function Gallery({ onOpenGalleryPage }) {
         ))}
       </div>
 
-      <div className="more-event">
+      <div className="more-event reveal-on-scroll">
         <button
           type="button"
           onClick={onOpenGalleryPage}

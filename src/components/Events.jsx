@@ -32,14 +32,17 @@ const upcomingEventsData = [
 export default function Events({ onOpenEventsPage }) {
   return (
     <section className="events-section" id="events">
-      <h2 className="section-title">Upcoming Events</h2>
-      <p className="section-subtitle">
+      <h2 className="section-title reveal-on-scroll">Upcoming Events</h2>
+      <p className="section-subtitle reveal-on-scroll">
         Join us for exciting upcoming events that bring the community together!
       </p>
 
       <div className="events-cards">
         {upcomingEventsData.map((ev, index) => (
-          <div key={ev.id} className={`event-card card${index + 1}`}>
+          <div
+            key={ev.id}
+            className={`event-card card${index + 1} reveal-on-scroll reveal-delay-${(index % 3) + 1}`}
+          >
             <div className="card-image">
               <img src={ev.image} alt={ev.heading} />
             </div>
@@ -66,7 +69,7 @@ export default function Events({ onOpenEventsPage }) {
         ))}
       </div>
 
-      <div className="more-event">
+      <div className="more-event reveal-on-scroll">
         <button
           type="button"
           onClick={onOpenEventsPage}

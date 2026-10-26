@@ -1,101 +1,70 @@
-import React from 'react';
-
-const teamMembers = [
-  {
-    id: 1,
-    img: '/lead.png',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'Lead',
-  },
-  {
-    id: 2,
-    img: '/co-lead.jpg',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'Co - Organiser',
-  },
-  {
-    id: 3,
-    img: '/mentor.jpeg',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'Mentor',
-  },
-  {
-    id: 4,
-    img: '/me.jpg',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'UX/UI Lead',
-  },
-  {
-    id: 5,
-    img: '/creative.jpg',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'Web-Dev Lead',
-  },
-  {
-    id: 6,
-    img: '/sexnik.jpg',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'Creative Lead',
-  },
-  {
-    id: 7,
-    img: '/ai.jpg',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'AIML Lead',
-  },
-  {
-    id: 8,
-    img: '/android.gif',
-    name: 'NAME',
-    subname: 'SUBNAME',
-    role: 'Android Lead',
-  },
-];
+import React, { useMemo } from 'react';
+import rawMembers from '../data/teamMembers.json';
+import { getProcessedMembers, DEFAULT_AVATAR } from '../utils/memberUtils';
 
 export default function Team() {
+  // Process members and sort according to the exact display priority order
+  const allMembers = useMemo(() => getProcessedMembers(rawMembers), []);
+
   return (
     <section className="team-section" id="team">
-      <div className="title-card">
+      <div className="title-card reveal-on-scroll">
         <div className="text-content">
           <h2>Our Team</h2>
           <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
-            ab illo inventore veritatis et quasi architecto beatae vitae dicta
-            sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-            aspernatur aut odit aut fugit.
+            Meet the passionate core organizers, technical leads, and innovators
+            behind Google Developer Group on Campus GIET University.
           </p>
         </div>
         <div className="dude"></div>
       </div>
 
+      {/* Team Cards Grid */}
       <div className="team-cards">
-        {teamMembers.map((member, idx) => (
-          <div key={member.id} className={`team-card tc${idx + 1}`}>
+        {allMembers.map((member, idx) => (
+          <div
+            key={member.id}
+            className={`team-card tc${(idx % 8) + 1} reveal-on-scroll reveal-delay-${(idx % 3) + 1}`}
+          >
             <div className="profile-pic">
-              <img src={member.img} alt={`${member.name} - ${member.role}`} />
+              <img
+                src={member.avatarUrl || DEFAULT_AVATAR}
+                alt={`${member.name} - ${member.displayRole}`}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = DEFAULT_AVATAR;
+                }}
+              />
             </div>
             <div className="ppl-det">
-              <h3>{member.name}</h3>
-              <h3>{member.subname}</h3>
-              <p>{member.role}</p>
+              <h3 title={member.name}>{member.name}</h3>
+              <p className="role-tag" title={member.displayRole}>
+                {member.displayRole}
+              </p>
               <div className="social-icons">
-                <a href="#" aria-label="LinkedIn">
-                  <i className="fa-brands fa-linkedin-in"></i>
-                </a>
-                <a href="#" aria-label="X Twitter">
-                  <i className="fa-brands fa-x-twitter"></i>
-                </a>
-                <a href="#" aria-label="Instagram">
-                  <i className="fa-brands fa-instagram"></i>
-                </a>
+                {member.githubUrl && (
+                  <a
+                    href={member.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${member.name}'s GitHub Profile`}
+                    title="GitHub"
+                  >
+                    <i className="fa-brands fa-github"></i>
+                  </a>
+                )}
+                {member.linkedinUrl && (
+                  <a
+                    href={member.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${member.name}'s LinkedIn Profile`}
+                    title="LinkedIn"
+                  >
+                    <i className="fa-brands fa-linkedin-in"></i>
+                  </a>
+                )}
               </div>
             </div>
           </div>
