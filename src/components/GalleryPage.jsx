@@ -93,73 +93,28 @@ export default function GalleryPage({ onBackToHome }) {
         <div
           className="lightbox-overlay"
           onClick={() => setActivePhoto(null)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.88)',
-            zIndex: 9999,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '1.5rem',
-            backdropFilter: 'blur(8px)',
-          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Photo view"
         >
           <div
-            style={{
-              position: 'relative',
-              maxWidth: '92vw',
-              maxHeight: '88vh',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
+            className="lightbox-content"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setActivePhoto(null)}
-              style={{
-                position: 'absolute',
-                top: '-45px',
-                right: '0px',
-                background: 'rgba(255, 255, 255, 0.25)',
-                border: 'none',
-                color: 'white',
-                fontSize: '1.75rem',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                cursor: 'pointer',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+              className="lightbox-close-btn"
               aria-label="Close"
+              type="button"
             >
               &times;
             </button>
             <img
               src={activePhoto.img}
               alt={activePhoto.caption}
-              style={{
-                maxWidth: '100%',
-                maxHeight: '80vh',
-                borderRadius: '1rem',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-                objectFit: 'contain',
-              }}
+              className="lightbox-image"
             />
-            <p
-              style={{
-                color: '#ffffff',
-                marginTop: '1rem',
-                fontSize: '1.15rem',
-                textAlign: 'center',
-                fontFamily: 'Lexend, sans-serif',
-                fontWeight: '400',
-              }}
-            >
+            <p className="lightbox-caption">
               {activePhoto.caption}
             </p>
           </div>

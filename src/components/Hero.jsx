@@ -141,24 +141,24 @@ export default function Hero() {
         zIndex: 2,
       };
     } else {
-      // Mobile
+      // Mobile - nicely proportioned stacked fan
       if (slot === 0) {
         return {
           left: '50%',
-          transform: 'translate3d(calc(-50% - 33vw), 0px, 0) rotate(-6deg) scale(0.88)',
+          transform: 'translate3d(calc(-50% - clamp(60px, 24vw, 100px)), 4px, 0) rotate(-7deg) scale(0.9)',
           zIndex: 1,
         };
       }
       if (slot === 1) {
         return {
           left: '50%',
-          transform: 'translate3d(-50%, -18px, 0) rotate(0deg) scale(1.02)',
+          transform: 'translate3d(-50%, -14px, 0) rotate(0deg) scale(1.02)',
           zIndex: 3,
         };
       }
       return {
         left: '50%',
-        transform: 'translate3d(calc(-50% + 33vw), 0px, 0) rotate(6deg) scale(0.88)',
+        transform: 'translate3d(calc(-50% + clamp(60px, 24vw, 100px)), 4px, 0) rotate(7deg) scale(0.9)',
         zIndex: 2,
       };
     }
@@ -184,7 +184,7 @@ export default function Hero() {
         </div>
         <div className="brand-quote">
           <h2>
-            GDG<span> On Campus </span> GIET University , Gunupur
+            GDG<span> On Campus </span> GIET University, Gunupur
           </h2>
         </div>
       </div>
@@ -194,16 +194,19 @@ export default function Hero() {
           className="card hero-card"
           id="card1"
           style={getCardStyle(positions[0])}
+          aria-label="Community card 1"
         ></div>
         <div
           className="card hero-card"
           id="card2"
           style={getCardStyle(positions[1])}
+          aria-label="Community card 2"
         ></div>
         <div
           className="card hero-card"
           id="card3"
           style={getCardStyle(positions[2])}
+          aria-label="Community card 3"
         ></div>
       </div>
     </section>

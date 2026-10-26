@@ -14,7 +14,7 @@ export default function Footer({ onNavigate }) {
         {/* First Column: Logo */}
         <div className="footer-column logo-column">
           <img src="/gdg_logo.png" alt="GDG Logo" className="footer-logo" />
-          <p>© 2026 GDG On Campus GIET University , Gunupur. All rights reserved.</p>
+          <p>© 2026 GDG On Campus GIET University, Gunupur. All rights reserved.</p>
         </div>
 
         {/* Second Column: Quick Links */}
