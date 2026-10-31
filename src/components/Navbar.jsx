@@ -72,10 +72,10 @@ export default function Navbar({ onNavigate, currentPage }) {
 
         <div className="nav-right">
           <a
-            href="mailto:example@example.com"
+            href="https://chat.whatsapp.com/JQLDqn3r9iYKKl5vH9yCNQ"
             className="connect"
           >
-            Contact Us
+            Join Community
           </a>
         </div>
 

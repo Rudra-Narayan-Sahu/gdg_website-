@@ -47,6 +47,7 @@
   --font-mono: 'Google Sans Mono', monospace;
   --font-body: 'Google Sans Text', 'Lexend', sans-serif;
   --font-brand: 'Product Sans', 'Google Sans', sans-serif;
+  --font-pixel: 'Pixelify Sans', 'Silkscreen', monospace;
 
   /* Google Creative Fellowship Brand Colors */
   --gcf-blue: #13a1d7;
@@ -92,26 +93,471 @@ h1, h2, h3, h4, h5, h6, .section-title {
     #00b213 359.67deg
   );
   background-blend-mode: screen;
-  opacity: 0.9;
+  opacity: 0.98;
   z-index: 1;
   pointer-events: none;
 }
 
+/* Layer 2: Scattered Useful GDG Words Layer */
+.hero-words-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: auto;
+  overflow: hidden;
+  user-select: none;
+}
+
+.hero-word-pill {
+  position: absolute;
+  font-family: var(--font-pixel);
+  font-size: clamp(15px, 1.45vw, 20px);
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 2px solid #000;
+  box-shadow: 3px 3px 0 0 #000;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.18s ease,
+              color 0.18s ease,
+              box-shadow 0.18s ease;
+  white-space: nowrap;
+}
+
+.hero-word-pill:hover {
+  transform: translateY(-3px) scale(1.1) !important;
+  background: #ffb700;
+  color: #000000;
+  box-shadow: 5px 5px 0 0 #000;
+  z-index: 10;
+}
+
+.hero-word-text {
+  font-family: var(--font-pixel);
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.hero-word-tag {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.hero-word-pill:hover .hero-word-tag {
+  background: #000;
+  color: #ffb700;
+}
+
+/* Layer 3: The White Grid Canvas Mask */
 .hero-scratch-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+  z-index: 3;
   pointer-events: none;
 }
 
-.hero-text,
+/* Layer 4 & 5: Text and Cards */
+.hero-text {
+  position: relative;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.hero-text h1,
+.hero-text h2 {
+  pointer-events: auto;
+}
+
 .cards-container {
   position: relative;
   z-index: 5;
+  pointer-events: auto;
+}
+
+/* Layer 6: Interactive Floating Scratch Hint / Reset Badge */
+.hero-scratch-badge {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0 0 #000;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #111;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.hero-scratch-badge:hover {
+  background: #ffb700;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 #000;
+}
+
+.hero-scratch-badge .badge-icon {
+  color: #1a73e8;
+  font-weight: 700;
+}
+
+.hero-scratch-badge .badge-reset-hint {
+  background: #000;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Reverse-Engineered Animated Elements (gdsc-nitr.netlify.app)
+   ========================================================================== */
+
+/* 1. Top-Right Concentric Circles */
+.hero-concentric-container {
+  position: absolute;
+  top: 80px;
+  right: -160px;
+  width: clamp(15rem, 20vw, 20rem);
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  animation: heroShapesFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+.hero-concentric-circles {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform-origin: center center;
+  animation: rotateConcentricCircles 10s linear infinite;
+}
+
+@keyframes rotateConcentricCircles {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* 2. Bottom-Left Shape & Dot Matrix */
+.hero-bottom-left-shapes {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 240px;
+  height: 230px;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  animation: heroShapesFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+.hero-bottom-left-shapes > div {
+  position: absolute;
+  box-sizing: border-box;
+  will-change: height, width, transform;
+}
+
+/* Animated Pills */
+.shape-rect-blue-ver {
+  left: 48px;
+  bottom: 80px;
+  width: 25px;
+  height: 75px;
+  background: #195BBB;
+  border-radius: 9999px;
+  animation: animBlueVer 3s ease-in-out infinite;
+}
+
+@keyframes animBlueVer {
+  0%, 100% {
+    height: 75px;
+  }
+  50% {
+    height: 25px;
+  }
+}
+
+.shape-rect-yellow-ver {
+  left: 80px;
+  bottom: 48px;
+  width: 24px;
+  height: 25px;
+  background: #FCBA07;
+  border-radius: 9999px;
+  animation: animYellowVer 6s ease-in-out infinite;
+}
+
+@keyframes animYellowVer {
+  0%, 100% {
+    height: 25px;
+  }
+  50% {
+    height: 100px;
+  }
+}
+
+.shape-rect-blue-hor {
+  left: 112px;
+  bottom: 48px;
+  width: 100px;
+  height: 25px;
+  background: #4285F4;
+  border-radius: 9999px;
+  animation: animBlueHor 6s ease-in-out infinite;
+}
+
+@keyframes animBlueHor {
+  0%, 100% {
+    width: 100px;
+  }
+  50% {
+    width: 25px;
+  }
+}
+
+.shape-rect-green-ver {
+  left: 112px;
+  bottom: 80px;
+  width: 24px;
+  height: 60px;
+  background: #0F9D58;
+  border-radius: 9999px;
+  animation: animGreenVer 2.6s ease-in-out infinite;
+}
+
+@keyframes animGreenVer {
+  0%, 100% {
+    height: 60px;
+  }
+  50% {
+    height: 32px;
+  }
+}
+
+.shape-rect-red-hor {
+  left: 80px;
+  bottom: 16px;
+  width: 75px;
+  height: 25px;
+  background: #ED4F47;
+  border-radius: 9999px;
+  animation: animRedHor 6s ease-in-out infinite;
+}
+
+@keyframes animRedHor {
+  0%, 100% {
+    width: 75px;
+  }
+  50% {
+    width: 25px;
+  }
+}
+
+/* Static Pills & Dots */
+.shape-darkblue-cir-1 {
+  left: 48px;
+  bottom: 16px;
+  width: 25px;
+  height: 25px;
+  background: #195BBB;
+  border-radius: 50%;
+}
+
+.shape-darkblue-cir-2 {
+  left: 48px;
+  bottom: 48px;
+  width: 25px;
+  height: 25px;
+  background: #195BBB;
+  border-radius: 50%;
+}
+
+.shape-darkblue-cir-3 {
+  left: 16px;
+  bottom: 176px;
+  width: 25px;
+  height: 25px;
+  background: #195BBB;
+  border-radius: 50%;
+}
+
+.shape-darkblue-cir-4 {
+  left: 112px;
+  bottom: 48px;
+  width: 25px;
+  height: 25px;
+  background: #195BBB;
+  border-radius: 50%;
+}
+
+.shape-rect-yellow-small {
+  left: 16px;
+  bottom: 96px;
+  width: 25px;
+  height: 56px;
+  background: #FCBA07;
+  border-radius: 9999px;
+}
+
+.shape-red-dot {
+  left: 176px;
+  bottom: 16px;
+  width: 24px;
+  height: 24px;
+  background: #B1130F;
+  border-radius: 50%;
+}
+
+.shape-yellow-dark {
+  left: 80px;
+  bottom: 48px;
+  width: 25px;
+  height: 25px;
+  background: #EA8600;
+  border-radius: 50%;
+}
+
+.shape-blue-circle {
+  left: 16px;
+  bottom: 160px;
+  width: 23px;
+  height: 24px;
+  background: #4385F6;
+  border-radius: 50%;
+}
+
+.shape-green-dot-1 {
+  left: 112px;
+  bottom: 144px;
+  width: 24px;
+  height: 24px;
+  background: #137333;
+  border-radius: 50%;
+}
+
+.shape-green-dot-2 {
+  left: 112px;
+  bottom: 128px;
+  width: 24px;
+  height: 24px;
+  background: #2A9748;
+  border-radius: 50%;
+}
+
+.shape-green-dot-3 {
+  left: 112px;
+  bottom: 176px;
+  width: 24px;
+  height: 24px;
+  background: #137333;
+  border-radius: 50%;
+}
+
+.shape-yellow-dot-1 {
+  left: 16px;
+  bottom: 16px;
+  width: 25px;
+  height: 25px;
+  background: #FFF0B3;
+  border-radius: 50%;
+}
+
+.shape-yellow-dot-2 {
+  left: 16px;
+  bottom: 32px;
+  width: 25px;
+  height: 25px;
+  background: #FDD663;
+  border-radius: 50%;
+}
+
+.shape-yellow-dot-3 {
+  left: 16px;
+  bottom: 48px;
+  width: 25px;
+  height: 25px;
+  background: #F9AB00;
+  border-radius: 50%;
+}
+
+.shape-yellow-dot-4 {
+  left: 16px;
+  bottom: 64px;
+  width: 25px;
+  height: 25px;
+  background: #EA8600;
+  border-radius: 50%;
+}
+
+@keyframes heroShapesFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-word-pill {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+  .hero-word-tag {
+    display: none;
+  }
+  .hero-scratch-badge {
+    bottom: 12px;
+    right: 14px;
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+  .hero-concentric-container {
+    width: 13rem;
+    right: -100px;
+    top: 50px;
+  }
+  .hero-bottom-left-shapes {
+    display: none; /* Matches reference site hidden md:flex */
+  }
 }
 
 /* Lenis smooth scrolling support */
@@ -363,20 +809,30 @@ h1, h2, h3, p {
 /* Hero Section */
 .hero-section {
   text-align: center;
-  padding: 5.5rem 0rem 2.5rem 0rem;
+  padding: 5.5rem 0rem 0rem 0rem;
   background-color: #ffffff;
-  min-height: 92vh;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.045) 1px, transparent 1px);
+  background-size: 58px 58px;
+  background-position: center top;
+  min-height: 94vh;
   overflow: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 @media (max-width: 768px) {
   .hero-section {
     min-height: auto;
-    padding: 4.8rem 0rem 2rem 0rem;
+    padding: 4.8rem 0rem 0.5rem 0rem;
     background-color: #ffffff;
+    background-image: 
+      linear-gradient(to right, rgba(0, 0, 0, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
   }
 }
 
@@ -395,20 +851,22 @@ h1, h2, h3, p {
   letter-spacing: -0.5px;
   line-height: 1.1;
   margin-bottom: 0.4rem;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95), 0 2px 14px rgba(255, 255, 255, 0.85);
 }
 
 .brand-quote h2 {
   font-size: clamp(0.95rem, 3.5vw, 1.45rem);
   font-weight: 400;
   margin-bottom: 0rem;
-  color: #374151;
+  color: #1f2937;
   line-height: 1.4;
   padding: 0 1rem;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95);
 }
 
 .brand-quote h2 span {
   color: #1a73e8;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {
@@ -422,35 +880,42 @@ h1, h2, h3, p {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 380px;
+  height: clamp(380px, 46vh, 470px);
   position: relative;
   width: 100%;
-  padding: 1rem 0;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding: 0;
+  margin-top: auto;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 768px) {
   .cards-container {
-    height: 310px;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    height: 320px;
+    margin-top: 1rem;
+    margin-bottom: 16px;
   }
 }
 
 .hero-card {
-  width: 220px;
+  width: clamp(230px, 20vw, 260px);
   aspect-ratio: 1/1.4;
   margin: 0;
   background-color: #f3f3f3;
   border-radius: 1.5rem;
-  box-shadow: 0px 10px 28px rgba(0, 0, 0, 0.22);
+  box-shadow: 0px 14px 32px rgba(0, 0, 0, 0.22);
   position: absolute;
-  top: 15px;
+  top: clamp(5px, 2vh, 30px);
   left: 50%;
   will-change: transform;
   transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hero-card {
+    width: clamp(175px, 50vw, 215px);
+    top: 5px;
+  }
 }
 
 #card1 {
